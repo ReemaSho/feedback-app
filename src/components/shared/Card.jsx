@@ -6,7 +6,7 @@ const Card = ({ children, reverse }) => {
 Card.defaultProps = {
   reverse: false,
 };
-Card.prototypes = {
+Card.propTypes = {
   reverse: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
