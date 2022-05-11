@@ -189,9 +189,16 @@ input:focus {
 /* FIX: Remove position: absolute to keep about icon at the bottom of the
  * document */
 
+.about {
+    margin-bottom: 55vh;
+}
+
 .about-link {
     display: flex;
     justify-content: flex-end;
+    position: absolute;
+    right: 5px;
+    margin-top: 10px;
 }
 
 
@@ -228,5 +235,8 @@ input:focus {
     }
     .input-group input {
         width: 80%;
+    }
+    .about {
+        margin-bottom: 50vh;
     }
 }
