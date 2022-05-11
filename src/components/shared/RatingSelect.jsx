@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-const RatingSelect = ({ selected, setSelected }) => {
+const RatingSelect = ({ rating, setRating }) => {
   const handleChange = (e) => {
-    setSelected(+e.currentTarget.value);
+    setRating(+e.currentTarget.value);
   };
   return (
     <ul className="rating">
@@ -14,7 +14,7 @@ const RatingSelect = ({ selected, setSelected }) => {
               id={`num${i + 1}`}
               value={`${i + 1}`}
               onChange={handleChange}
-              checked={selected === Number(`${i + 1}`)}
+              checked={rating === Number(`${i + 1}`)}
             />
             <label htmlFor={`num${i + 1}`}>{`${i + 1}`}</label>
           </li>
@@ -24,7 +24,7 @@ const RatingSelect = ({ selected, setSelected }) => {
   );
 };
 RatingSelect.propTypes = {
-  selected: PropTypes.number,
-  setSelected: PropTypes.func.isRequired,
+  rating: PropTypes.number,
+  setRating: PropTypes.func.isRequired,
 };
 export default RatingSelect;
