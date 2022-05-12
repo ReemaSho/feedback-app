@@ -21,7 +21,10 @@ export const FeedbackProvider = ({ children }) => {
       text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. consequuntur vel vitae commodi alias voluptatem est voluptatum ipsa quae.",
     },
   ]);
-
+  const [feedbackToEdit, setFeedbackToEdit] = useState({
+    item: {},
+    editMode: false,
+  });
   const addFeedback = (newFeedback) => {
     newFeedback.id = uuidv4();
     setFeedback([newFeedback, ...feedback]);
@@ -32,9 +35,22 @@ export const FeedbackProvider = ({ children }) => {
       setFeedback(feedback.filter((item) => item.id !== id));
     }
   };
-
+  const editFeedback = (item) => {
+    setFeedbackToEdit({
+      item,
+      editMode: true,
+    });
+  };
   return (
-    <FeedbackContext.Provider value={{ feedback, deleteFeedback, addFeedback }}>
+    <FeedbackContext.Provider
+      value={{
+        feedback,
+        deleteFeedback,
+        addFeedback,
+        editFeedback,
+        feedbackToEdit,
+      }}
+    >
       {children}
     </FeedbackContext.Provider>
   );

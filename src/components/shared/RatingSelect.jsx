@@ -1,8 +1,16 @@
 import PropTypes from "prop-types";
+import FeedbackContext from "../context/FeedbackContext";
+import { useEffect, useContext } from "react";
 const RatingSelect = ({ rating, setRating }) => {
+  const { feedbackToEdit } = useContext(FeedbackContext);
   const handleChange = (e) => {
     setRating(+e.currentTarget.value);
   };
+  useEffect(() => {
+    if (feedbackToEdit.editMode === true) {
+      setRating(feedbackToEdit.item.rating);
+    }
+  }, [feedbackToEdit, setRating]);
   return (
     <ul className="rating">
       {Array.from({ length: 10 }, (_, i) => {
