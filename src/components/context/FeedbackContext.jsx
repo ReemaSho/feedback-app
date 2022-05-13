@@ -5,14 +5,13 @@ const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   const [feedback, setFeedback] = useState([]);
   useEffect(() => {
     fetchFeedback();
   }, []);
   const fetchFeedback = async () => {
-    const response = await fetch(
-      "http://localhost:5000/feedback?_sort=id&_order=desc"
-    );
+    const response = await fetch("/feedback?_sort=id&_order=desc");
     const data = await response.json();
     setFeedback(data);
     setIsLoading(false);
@@ -21,9 +20,18 @@ export const FeedbackProvider = ({ children }) => {
     item: {},
     editMode: false,
   });
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4();
-    setFeedback([newFeedback, ...feedback]);
+  const addFeedback = async (newFeedback) => {
+    const response = await fetch("/feedback?_sort=id&_order=desc", {
+      method: "Post",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newFeedback),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setFeedback([data, ...feedback]);
+    } else {
+      setErrorMessage("Something went wrong try again later please.");
+    }
   };
 
   const deleteFeedback = (id) => {
@@ -51,10 +59,12 @@ export const FeedbackProvider = ({ children }) => {
         feedback,
         feedbackToEdit,
         isLoading,
+        errorMessage,
         deleteFeedback,
         addFeedback,
         editFeedback,
         updateFeedback,
+        setErrorMessage,
       }}
     >
       {children}

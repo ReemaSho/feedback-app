@@ -4,11 +4,16 @@ import RatingSelect from "./shared/RatingSelect";
 import Button from "./shared/Button";
 import FeedbackContext from "./context/FeedbackContext";
 const FeedbackForm = () => {
-  const { addFeedback, feedbackToEdit, updateFeedback } =
-    useContext(FeedbackContext);
+  const {
+    addFeedback,
+    feedbackToEdit,
+    updateFeedback,
+    errorMessage,
+    setErrorMessage,
+  } = useContext(FeedbackContext);
   const [text, setText] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(true);
-  const [message, setMessage] = useState("");
+
   const [rating, setRating] = useState(10);
   useEffect(() => {
     if (feedbackToEdit.editMode === true) {
@@ -20,12 +25,12 @@ const FeedbackForm = () => {
   const handleTextChange = (e) => {
     if (text === "") {
       setBtnDisabled(true);
-      setMessage(null);
+      setErrorMessage(null);
     } else if (text !== "" && text.trim().length <= 10) {
       setBtnDisabled(true);
-      setMessage("Text must be at least 10 characters");
+      setErrorMessage("Text must be at least 10 characters");
     } else {
-      setMessage(null);
+      setErrorMessage(null);
       setBtnDisabled(false);
     }
 
@@ -63,7 +68,7 @@ const FeedbackForm = () => {
             Send
           </Button>
         </div>
-        {message && <div className="message">{message}</div>}
+        {errorMessage && <div className="message">{errorMessage}</div>}
       </form>
     </Card>
   );
