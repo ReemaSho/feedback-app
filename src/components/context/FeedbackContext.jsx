@@ -10,6 +10,7 @@ export const FeedbackProvider = ({ children }) => {
   useEffect(() => {
     fetchFeedback();
   }, []);
+  // get feedbacks
   const fetchFeedback = async () => {
     const response = await fetch("/feedback?_sort=id&_order=desc");
     const data = await response.json();
@@ -20,9 +21,10 @@ export const FeedbackProvider = ({ children }) => {
     item: {},
     editMode: false,
   });
+  // post feedback
   const addFeedback = async (newFeedback) => {
     const response = await fetch("/feedback?_sort=id&_order=desc", {
-      method: "Post",
+      method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(newFeedback),
     });
@@ -30,13 +32,15 @@ export const FeedbackProvider = ({ children }) => {
       const data = await response.json();
       setFeedback([data, ...feedback]);
     } else {
-      setErrorMessage("Something went wrong try again later please.");
     }
   };
-
-  const deleteFeedback = (id) => {
+  // delete feedback
+  const deleteFeedback = async (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
-      setFeedback(feedback.filter((item) => item.id !== id));
+      const response = await fetch(`/feedback/${id}`, { method: "DELETE" });
+      if (response.ok) {
+        setFeedback(feedback.filter((item) => item.id !== id));
+      }
     }
   };
   const editFeedback = (item) => {
